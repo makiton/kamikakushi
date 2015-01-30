@@ -1,3 +1,4 @@
+require 'kamikakushi/kaonashi'
 module Kamikakushi
   extend ActiveSupport::Concern
 

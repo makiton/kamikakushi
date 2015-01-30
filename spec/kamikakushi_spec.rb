@@ -80,4 +80,19 @@ RSpec.describe Kamikakushi do
       it { is_expected.to include deleted_post }
     end
   end
+
+  describe 'children' do
+    subject { comment.destroyed? }
+    let!(:comment) { post.comments.create(content: 'comment') }
+    after { Comment.delete_all }
+
+    context 'when parent is not destroyed' do
+      it { is_expected.to be false }
+    end
+
+    context 'when parent is destroyed' do
+      before { comment.post.destroy }
+      it { is_expected.to be true }
+    end
+  end
 end

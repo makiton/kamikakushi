@@ -6,6 +6,9 @@ ActiveRecord::Base.establish_connection :test
 class Post < ActiveRecord::Base
   include Kamikakushi
   attr_accessor :comment_after_destroy
+
+  has_many :comments
+
   before_destroy :set_before_destroy
   after_destroy :set_after_destroy
 
@@ -18,12 +21,22 @@ class Post < ActiveRecord::Base
   end
 end
 
+class Comment < ActiveRecord::Base
+  belongs_to :post
+  include Kamikakushi::Kaonashi
+end
+
 class CreateAllTables < ActiveRecord::Migration
   def self.up
     create_table(:posts) do |t|
       t.string :title
       t.boolean :protected
       t.datetime :deleted_at
+    end
+
+    create_table(:comments) do |t|
+      t.integer :post_id
+      t.string :content
     end
   end
 end
